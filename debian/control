@@ -1,0 +1,30 @@
+Source: iap-programmer
+Section: electronics
+Priority: optional
+Maintainer: lhdjply <lhdjply@126.com>
+Build-Depends: debhelper-compat (= 13),
+               cmake,
+               libhidapi-dev,
+               pkgconf,
+               qt6-base-dev,
+               qt6-l10n-tools,
+               qt6-tools-dev,
+               qt6-tools-dev-tools,
+               qt6-svg-dev,
+Rules-Requires-Root: no
+Standards-Version: 4.6.0
+Homepage: https://github.com/lhdjply/iap-programmer/
+Vcs-Browser: https://github.com/lhdjply/iap-programmer
+Vcs-Git: https://github.com/lhdjply/iap-programmer.git
+
+Package: iap-programmer
+Section: electronics
+Priority: optional
+Architecture: any
+Depends: 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: IAP programmer for microcontrollers
+ A Qt6-based In-Application Programming tool for microcontrollers
+ with both GUI and command-line interfaces, supporting firmware
+ programming via HID interface for embedded device development.

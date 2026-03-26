@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/linux/hicolor/16x16/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/22x22/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/32x32/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/48x48/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/64x64/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/128x128/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/256x256/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/512x512/apps/iap-programmer.png</file>
+        <file>icons/linux/hicolor/scalable/apps/iap-programmer.svg</file>
+        <file>icons/windows/iap-programmer.ico</file>
+    </qresource>
+</RCC>
