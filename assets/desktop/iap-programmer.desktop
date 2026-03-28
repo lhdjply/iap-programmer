@@ -1,8 +1,8 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=iap-programmer
-Name[zh_CN]=IAP编程器
-Comment=IAP编程器
+Name[zh_CN]=IAP烧录工具
+Comment=AP烧录工具
 Exec=iap-programmer
 Icon=iap-programmer
 Terminal=false

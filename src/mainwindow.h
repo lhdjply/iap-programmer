@@ -39,6 +39,7 @@ class MainWindow : public QMainWindow
 
     // UI components
     QLabel * m_statusLabel;
+    QLabel * m_statusIndicator;
     QPushButton * m_selectFileBtn;
     QPushButton * m_startBtn;
     QLineEdit * m_filePathEdit;

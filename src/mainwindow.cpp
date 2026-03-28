@@ -8,6 +8,8 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QThread>
+#include <QFrame>
+#include <QGraphicsDropShadowEffect>
 
 MainWindow::MainWindow(QWidget * parent)
   : QMainWindow(parent)
@@ -33,84 +35,335 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupUi()
 {
+  // 设置窗口整体样式
+  setStyleSheet(R"(
+    QMainWindow {
+      background-color: #f5f7fa;
+    }
+    QLabel {
+      color: #2c3e50;
+      font-size: 13px;
+    }
+    QLineEdit {
+      padding: 4px 10px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      background-color: white;
+      color: #2c3e50;
+      font-size: 13px;
+      min-height: 16px;
+      selection-background-color: #3498db;
+    }
+    QLineEdit:focus {
+      border-color: #3498db;
+    }
+    QLineEdit:disabled {
+      background-color: #ecf0f1;
+      color: #95a5a6;
+    }
+    QPushButton {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: white;
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #667eea, stop:1 #764ba2);
+    }
+    QPushButton:hover {
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #5a6fd6, stop:1 #6a4190);
+    }
+    QPushButton:pressed {
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #4e5fc4, stop:1 #5e3780);
+    }
+    QPushButton:disabled {
+      background: #bdc3c7;
+      color: #ecf0f1;
+    }
+    QProgressBar {
+      border: none;
+      border-radius: 8px;
+      background-color: #e1e8ed;
+      text-align: center;
+      font-weight: bold;
+      color: #2c3e50;
+      height: 24px;
+    }
+    QProgressBar::chunk {
+      border-radius: 8px;
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #11998e, stop:1 #38ef7d);
+    }
+    QTextEdit {
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      background-color: #1e293b;
+      color: #e2e8f0;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      padding: 12px;
+      selection-background-color: #3498db;
+    }
+    QScrollBar:vertical {
+      border: none;
+      background: #f1f5f9;
+      width: 10px;
+      border-radius: 5px;
+    }
+    QScrollBar::handle:vertical {
+      background: #cbd5e1;
+      border-radius: 5px;
+      min-height: 30px;
+    }
+    QScrollBar::handle:vertical:hover {
+      background: #94a3b8;
+    }
+  )");
+
   QWidget * centralWidget = new QWidget(this);
   QVBoxLayout * mainLayout = new QVBoxLayout(centralWidget);
+  mainLayout->setSpacing(5);
+  mainLayout->setContentsMargins(5, 5, 5, 5);
 
-  // Status bar
-  QHBoxLayout * statusLayout = new QHBoxLayout();
+  // 状态卡片
+  QFrame * statusCard = new QFrame(this);
+  statusCard->setStyleSheet(R"(
+    QFrame {
+      background-color: #e2e8f0;
+      border-radius: 16px;
+    }
+  )");
+  QGraphicsDropShadowEffect * statusShadow = new QGraphicsDropShadowEffect(this);
+  statusShadow->setBlurRadius(20);
+  statusShadow->setColor(QColor(0, 0, 0, 30));
+  statusShadow->setOffset(0, 4);
+  statusCard->setGraphicsEffect(statusShadow);
+
+  QHBoxLayout * statusCardLayout = new QHBoxLayout(statusCard);
+  statusCardLayout->setContentsMargins(12, 8, 12, 8);
+
+  QLabel * statusTitle = new QLabel(tr("Device Status"), this);
+  statusTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
+  statusCardLayout->addWidget(statusTitle);
+
+  statusCardLayout->addStretch();
+
+  // 状态指示器
+  m_statusIndicator = new QLabel(this);
+  m_statusIndicator->setFixedSize(12, 12);
+  m_statusIndicator->setStyleSheet("QLabel { background-color: #ef4444; border-radius: 6px; }");
+  statusCardLayout->addWidget(m_statusIndicator);
+
   m_statusLabel = new QLabel(tr("Disconnected"), this);
-  m_statusLabel->setStyleSheet("QLabel { color: red; font-weight: bold; }");
-  statusLayout->addWidget(new QLabel(tr("Status:"), this));
-  statusLayout->addWidget(m_statusLabel);
-  statusLayout->addStretch();
-  mainLayout->addLayout(statusLayout);
+  m_statusLabel->setStyleSheet("QLabel { color: #ef4444; font-weight: bold; font-size: 14px; }");
+  statusCardLayout->addWidget(m_statusLabel);
 
-  // File selection
+  mainLayout->addWidget(statusCard);
+
+  // 文件选择卡片
+  QFrame * fileCard = new QFrame(this);
+  fileCard->setStyleSheet(R"(
+    QFrame {
+      background-color: #dbeafe;
+      border-radius: 16px;
+    }
+  )");
+  QGraphicsDropShadowEffect * fileShadow = new QGraphicsDropShadowEffect(this);
+  fileShadow->setBlurRadius(20);
+  fileShadow->setColor(QColor(0, 0, 0, 30));
+  fileShadow->setOffset(0, 4);
+  fileCard->setGraphicsEffect(fileShadow);
+
+  QVBoxLayout * fileCardLayout = new QVBoxLayout(fileCard);
+  fileCardLayout->setContentsMargins(12, 12, 12, 12);
+  fileCardLayout->setSpacing(8);
+
+  QLabel * fileTitle = new QLabel(tr("Firmware File"), this);
+  fileTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
+  fileCardLayout->addWidget(fileTitle);
+
   QHBoxLayout * fileLayout = new QHBoxLayout();
+  fileLayout->setSpacing(12);
   m_filePathEdit = new QLineEdit(this);
   m_filePathEdit->setReadOnly(true);
-  m_filePathEdit->setPlaceholderText(tr("Select firmware file (.bin)"));
-  m_selectFileBtn = new QPushButton(tr("Select File"), this);
+  m_filePathEdit->setPlaceholderText(tr("Select firmware file (.bin or .hex)"));
   fileLayout->addWidget(m_filePathEdit);
-  fileLayout->addWidget(m_selectFileBtn);
-  mainLayout->addLayout(fileLayout);
 
-  // VID/PID input
+  m_selectFileBtn = new QPushButton(tr("Browse"), this);
+  m_selectFileBtn->setFixedWidth(120);
+  m_selectFileBtn->setFixedHeight(36);
+  fileLayout->addWidget(m_selectFileBtn);
+  fileCardLayout->addLayout(fileLayout);
+
+  mainLayout->addWidget(fileCard);
+
+  // 设备配置卡片
+  QFrame * configCard = new QFrame(this);
+  configCard->setStyleSheet(R"(
+    QFrame {
+      background-color: #dcfce7;
+      border-radius: 16px;
+    }
+  )");
+  QGraphicsDropShadowEffect * configShadow = new QGraphicsDropShadowEffect(this);
+  configShadow->setBlurRadius(20);
+  configShadow->setColor(QColor(0, 0, 0, 30));
+  configShadow->setOffset(0, 4);
+  configCard->setGraphicsEffect(configShadow);
+
+  QVBoxLayout * configCardLayout = new QVBoxLayout(configCard);
+  configCardLayout->setContentsMargins(12, 12, 12, 12);
+  configCardLayout->setSpacing(8);
+
+  QLabel * configTitle = new QLabel(tr("Device Configuration"), this);
+  configTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
+  configCardLayout->addWidget(configTitle);
+
+  // VID/PID 输入
   QHBoxLayout * deviceIdLayout = new QHBoxLayout();
-  deviceIdLayout->addWidget(new QLabel(tr("VID:"), this));
+  deviceIdLayout->setSpacing(20);
+
+  QVBoxLayout * vidLayout = new QVBoxLayout();
+  vidLayout->setSpacing(6);
+  QLabel * vidLabel = new QLabel(tr("Vendor ID (VID)"), this);
+  vidLabel->setStyleSheet("QLabel { color: #64748b; font-size: 12px; }");
+  vidLayout->addWidget(vidLabel);
   m_vidEdit = new QLineEdit(this);
   m_vidEdit->setText("0x2E3C");
-  m_vidEdit->setPlaceholderText(tr("Enter vendor ID (hex)"));
-  m_vidEdit->setFixedWidth(100);
-  deviceIdLayout->addWidget(m_vidEdit);
+  m_vidEdit->setPlaceholderText(tr("Enter VID (hex)"));
+  m_vidEdit->setMinimumWidth(100);
+  m_vidEdit->setFixedHeight(28);
+  vidLayout->addWidget(m_vidEdit);
+  deviceIdLayout->addLayout(vidLayout);
 
-  deviceIdLayout->addSpacing(20);
-
-  deviceIdLayout->addWidget(new QLabel(tr("PID:"), this));
+  QVBoxLayout * pidLayout = new QVBoxLayout();
+  pidLayout->setSpacing(6);
+  QLabel * pidLabel = new QLabel(tr("Product ID (PID)"), this);
+  pidLabel->setStyleSheet("QLabel { color: #64748b; font-size: 12px; }");
+  pidLayout->addWidget(pidLabel);
   m_pidEdit = new QLineEdit(this);
   m_pidEdit->setText("0xAF01");
-  m_pidEdit->setPlaceholderText(tr("Enter product ID (hex)"));
-  m_pidEdit->setFixedWidth(100);
-  deviceIdLayout->addWidget(m_pidEdit);
+  m_pidEdit->setPlaceholderText(tr("Enter PID (hex)"));
+  m_pidEdit->setMinimumWidth(100);
+  m_pidEdit->setFixedHeight(28);
+  pidLayout->addWidget(m_pidEdit);
+  deviceIdLayout->addLayout(pidLayout);
 
-  deviceIdLayout->addStretch();
-  mainLayout->addLayout(deviceIdLayout);
-
-  // Flash address input
-  QHBoxLayout * addressLayout = new QHBoxLayout();
-  addressLayout->addWidget(new QLabel(tr("Flash Address:"), this));
+  QVBoxLayout * addrLayout = new QVBoxLayout();
+  addrLayout->setSpacing(6);
+  QLabel * addrLabel = new QLabel(tr("Flash Address"), this);
+  addrLabel->setStyleSheet("QLabel { color: #64748b; font-size: 12px; }");
+  addrLayout->addWidget(addrLabel);
   m_addressEdit = new QLineEdit(this);
   m_addressEdit->setText("0x08005000");
   m_addressEdit->setPlaceholderText(tr("Enter flash address (hex)"));
   m_addressEdit->setEnabled(false);
-  addressLayout->addWidget(m_addressEdit);
-  mainLayout->addLayout(addressLayout);
+  m_addressEdit->setMinimumWidth(120);
+  m_addressEdit->setFixedHeight(28);
+  addrLayout->addWidget(m_addressEdit);
+  deviceIdLayout->addLayout(addrLayout);
 
-  // Progress bar
+  deviceIdLayout->addStretch();
+  configCardLayout->addLayout(deviceIdLayout);
+
+  mainLayout->addWidget(configCard);
+
+  // 进度卡片
+  QFrame * progressCard = new QFrame(this);
+  progressCard->setStyleSheet(R"(
+    QFrame {
+      background-color: #fef3c7;
+      border-radius: 16px;
+    }
+  )");
+  QGraphicsDropShadowEffect * progressShadow = new QGraphicsDropShadowEffect(this);
+  progressShadow->setBlurRadius(20);
+  progressShadow->setColor(QColor(0, 0, 0, 30));
+  progressShadow->setOffset(0, 4);
+  progressCard->setGraphicsEffect(progressShadow);
+
+  QVBoxLayout * progressCardLayout = new QVBoxLayout(progressCard);
+  progressCardLayout->setContentsMargins(12, 12, 12, 12);
+  progressCardLayout->setSpacing(8);
+
+  QLabel * progressTitle = new QLabel(tr("Upgrade Progress"), this);
+  progressTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
+  progressCardLayout->addWidget(progressTitle);
+
+  QHBoxLayout * progressRowLayout = new QHBoxLayout();
+  progressRowLayout->setSpacing(12);
+
   m_progressBar = new QProgressBar(this);
   m_progressBar->setTextVisible(true);
   m_progressBar->setFormat("%p%");
   m_progressBar->setValue(0);
-  mainLayout->addWidget(m_progressBar);
+  m_progressBar->setFixedHeight(28);
+  progressRowLayout->addWidget(m_progressBar);
 
-  // Action buttons
-  QHBoxLayout * actionLayout = new QHBoxLayout();
+  // 升级按钮
   m_startBtn = new QPushButton(tr("Start Upgrade"), this);
-  m_startBtn->setMinimumWidth(150);
+  m_startBtn->setFixedWidth(120);
+  m_startBtn->setFixedHeight(36);
+  m_startBtn->setStyleSheet(R"(
+    QPushButton {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: white;
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #11998e, stop:1 #38ef7d);
+    }
+    QPushButton:hover {
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0d8579, stop:1 #2dd46a);
+    }
+    QPushButton:pressed {
+      background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0a7166, stop:1 #25b85a);
+    }
+    QPushButton:disabled {
+      background: #bdc3c7;
+      color: #ecf0f1;
+    }
+  )");
   m_startBtn->setEnabled(false);
-  actionLayout->addWidget(m_startBtn);
-  actionLayout->addStretch();
-  mainLayout->addLayout(actionLayout);
+  progressRowLayout->addWidget(m_startBtn);
 
-  // Log area
+  progressCardLayout->addLayout(progressRowLayout);
+
+  mainLayout->addWidget(progressCard);
+
+  // 日志卡片
+  QFrame * logCard = new QFrame(this);
+  logCard->setStyleSheet(R"(
+    QFrame {
+      background-color: #ffffff;
+      border-radius: 16px;
+    }
+  )");
+  QGraphicsDropShadowEffect * logShadow = new QGraphicsDropShadowEffect(this);
+  logShadow->setBlurRadius(20);
+  logShadow->setColor(QColor(0, 0, 0, 30));
+  logShadow->setOffset(0, 4);
+  logCard->setGraphicsEffect(logShadow);
+
+  QVBoxLayout * logCardLayout = new QVBoxLayout(logCard);
+  logCardLayout->setContentsMargins(12, 12, 12, 12);
+  logCardLayout->setSpacing(8);
+
+  QLabel * logTitle = new QLabel(tr("Activity Log"), this);
+  logTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
+  logCardLayout->addWidget(logTitle);
+
   m_logEdit = new QTextEdit(this);
   m_logEdit->setReadOnly(true);
-  m_logEdit->setMinimumHeight(200);
-  mainLayout->addWidget(m_logEdit);
+  m_logEdit->setMinimumHeight(100);
+  logCardLayout->addWidget(m_logEdit, 1);
+
+  mainLayout->addWidget(logCard);
 
   setCentralWidget(centralWidget);
-  setWindowTitle(tr(PROJECT_TARGET));
-  setMinimumSize(500, 400);
+  setWindowTitle(tr("iap-programmer"));
+  setMinimumSize(600, 500);
+  resize(800, 500);
 
   // Connect signals
   connect(m_selectFileBtn, &QPushButton::clicked, this, &MainWindow::onSelectFileClicked);
@@ -119,13 +372,46 @@ void MainWindow::setupUi()
 
 void MainWindow::log(const QString & message)
 {
-  QString timestamp = QDateTime::currentDateTime().toString("[hh:mm:ss] ");
-  m_logEdit->append(timestamp + message);
+  QString timestamp = QDateTime::currentDateTime().toString("[hh:mm:ss]");
+  QString color;
+
+  if (message.contains("Error", Qt::CaseInsensitive) || message.contains("Failed", Qt::CaseInsensitive))
+  {
+    color = "#f87171"; // 红色错误
+  }
+  else if (message.contains("Success", Qt::CaseInsensitive) || message.contains("completed", Qt::CaseInsensitive))
+  {
+    color = "#4ade80"; // 绿色成功
+  }
+  else if (message.contains("Warning", Qt::CaseInsensitive))
+  {
+    color = "#fbbf24"; // 黄色警告
+  }
+  else
+  {
+    color = "#94a3b8"; // 灰色普通
+  }
+
+  m_logEdit->append(QString("<span style='color:#64748b;'>%1</span> <span style='color:%2;'>%3</span>")
+                    .arg(timestamp)
+                    .arg(color)
+                    .arg(message.toHtmlEscaped()));
 }
 
 void MainWindow::updateStatus(const QString & status)
 {
   m_statusLabel->setText(status);
+
+  if (status == tr("Connected"))
+  {
+    m_statusIndicator->setStyleSheet("QLabel { background-color: #22c55e; border-radius: 6px; box-shadow: 0 0 8px #22c55e; }");
+    m_statusLabel->setStyleSheet("QLabel { color: #22c55e; font-weight: bold; font-size: 14px; }");
+  }
+  else
+  {
+    m_statusIndicator->setStyleSheet("QLabel { background-color: #ef4444; border-radius: 6px; }");
+    m_statusLabel->setStyleSheet("QLabel { color: #ef4444; font-weight: bold; font-size: 14px; }");
+  }
 }
 
 void MainWindow::onSelectFileClicked()
@@ -143,6 +429,7 @@ void MainWindow::onSelectFileClicked()
     {
       m_firmwarePath = filePath;
       m_filePathEdit->setText(filePath);
+      m_filePathEdit->setStyleSheet("QLineEdit { padding: 10px 14px; border: 2px solid #11998e; border-radius: 10px; background-color: white; color: #2c3e50; font-size: 13px; }");
       m_addressEdit->setEnabled(true);
       log(tr("Loaded firmware: %1 (%2 bytes)").arg(filePath).arg(size));
 
@@ -301,7 +588,8 @@ void MainWindow::onStartUpgradeClicked()
   if(m_hidDevice->open(m_vendorId, m_productId))
   {
     m_statusLabel->setText(tr("Connected"));
-    m_statusLabel->setStyleSheet("QLabel { color: green; font-weight: bold; }");
+    m_statusIndicator->setStyleSheet("QLabel { background-color: #22c55e; border-radius: 6px; box-shadow: 0 0 8px #22c55e; }");
+    m_statusLabel->setStyleSheet("QLabel { color: #22c55e; font-weight: bold; font-size: 14px; }");
 
     log(tr("Device connected successfully"));
 
@@ -619,7 +907,8 @@ bool MainWindow::startIap()
       {
         m_hidDevice->close();
         m_statusLabel->setText(tr("Disconnected"));
-        m_statusLabel->setStyleSheet("QLabel { color: red; font-weight: bold; }");
+        m_statusIndicator->setStyleSheet("QLabel { background-color: #ef4444; border-radius: 6px; }");
+        m_statusLabel->setStyleSheet("QLabel { color: #ef4444; font-weight: bold; font-size: 14px; }");
       }
     });
   }
@@ -654,11 +943,9 @@ void MainWindow::onErrorOccurred(const QString & error)
 void MainWindow::onDeviceConnected()
 {
   updateStatus(tr("Connected"));
-  m_statusLabel->setStyleSheet("QLabel { color: green; font-weight: bold; }");
 }
 
 void MainWindow::onDeviceDisconnected()
 {
   updateStatus(tr("Disconnected"));
-  m_statusLabel->setStyleSheet("QLabel { color: red; font-weight: bold; }");
 }
