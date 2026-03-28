@@ -18,22 +18,22 @@
 class CustomTextEdit : public QTextEdit
 {
     Q_OBJECT
-public:
-    explicit CustomTextEdit(QWidget *parent = nullptr) : QTextEdit(parent) {}
-    
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override;
+  public:
+    explicit CustomTextEdit(QWidget * parent = nullptr) : QTextEdit(parent) {}
+
+  protected:
+    void contextMenuEvent(QContextMenuEvent * event) override;
 };
 
 // Custom line edit with translated context menu
 class CustomLineEdit : public QLineEdit
 {
     Q_OBJECT
-public:
-    explicit CustomLineEdit(QWidget *parent = nullptr) : QLineEdit(parent) {}
-    
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override;
+  public:
+    explicit CustomLineEdit(QWidget * parent = nullptr) : QLineEdit(parent) {}
+
+  protected:
+    void contextMenuEvent(QContextMenuEvent * event) override;
 };
 
 class MainWindow : public QMainWindow

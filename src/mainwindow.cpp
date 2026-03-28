@@ -375,15 +375,15 @@ void MainWindow::log(const QString & message)
   QString timestamp = QDateTime::currentDateTime().toString("[hh:mm:ss]");
   QString color;
 
-  if (message.contains("Error", Qt::CaseInsensitive) || message.contains("Failed", Qt::CaseInsensitive))
+  if(message.contains("Error", Qt::CaseInsensitive) || message.contains("Failed", Qt::CaseInsensitive))
   {
     color = "#f87171"; // 红色错误
   }
-  else if (message.contains("Success", Qt::CaseInsensitive) || message.contains("completed", Qt::CaseInsensitive))
+  else if(message.contains("Success", Qt::CaseInsensitive) || message.contains("completed", Qt::CaseInsensitive))
   {
     color = "#4ade80"; // 绿色成功
   }
-  else if (message.contains("Warning", Qt::CaseInsensitive))
+  else if(message.contains("Warning", Qt::CaseInsensitive))
   {
     color = "#fbbf24"; // 黄色警告
   }
@@ -402,7 +402,7 @@ void MainWindow::updateStatus(const QString & status)
 {
   m_statusLabel->setText(status);
 
-  if (status == tr("Connected"))
+  if(status == tr("Connected"))
   {
     m_statusIndicator->setStyleSheet("QLabel { background-color: #22c55e; border-radius: 6px; box-shadow: 0 0 8px #22c55e; }");
     m_statusLabel->setStyleSheet("QLabel { color: #22c55e; font-weight: bold; font-size: 14px; }");
@@ -950,13 +950,13 @@ void MainWindow::onDeviceDisconnected()
   updateStatus(tr("Disconnected"));
 }
 
-void CustomTextEdit::contextMenuEvent(QContextMenuEvent *event)
+void CustomTextEdit::contextMenuEvent(QContextMenuEvent * event)
 {
-  QMenu *menu = createStandardContextMenu();
-  
+  QMenu * menu = createStandardContextMenu();
+
   // Get standard menu actions and set Chinese text
   QList<QAction *> actions = menu->actions();
-  for(QAction *action : actions)
+  for(QAction * action : actions)
   {
     if(action->text() == "&Undo")
     {
@@ -987,18 +987,18 @@ void CustomTextEdit::contextMenuEvent(QContextMenuEvent *event)
       action->setText(tr("Select All"));
     }
   }
-  
+
   menu->exec(event->globalPos());
   delete menu;
 }
 
-void CustomLineEdit::contextMenuEvent(QContextMenuEvent *event)
+void CustomLineEdit::contextMenuEvent(QContextMenuEvent * event)
 {
-  QMenu *menu = createStandardContextMenu();
-  
+  QMenu * menu = createStandardContextMenu();
+
   // Get standard menu actions and set Chinese text
   QList<QAction *> actions = menu->actions();
-  for(QAction *action : actions)
+  for(QAction * action : actions)
   {
     if(action->text() == "&Undo")
     {
@@ -1029,7 +1029,7 @@ void CustomLineEdit::contextMenuEvent(QContextMenuEvent *event)
       action->setText(tr("Select All"));
     }
   }
-  
+
   menu->exec(event->globalPos());
   delete menu;
 }
