@@ -183,7 +183,7 @@ void MainWindow::setupUi()
 
   QHBoxLayout * fileLayout = new QHBoxLayout();
   fileLayout->setSpacing(12);
-  m_filePathEdit = new QLineEdit(this);
+  m_filePathEdit = new CustomLineEdit(this);
   m_filePathEdit->setReadOnly(true);
   m_filePathEdit->setPlaceholderText(tr("Select firmware file (.bin or .hex)"));
   fileLayout->addWidget(m_filePathEdit);
@@ -227,7 +227,7 @@ void MainWindow::setupUi()
   QLabel * vidLabel = new QLabel(tr("Vendor ID (VID)"), this);
   vidLabel->setStyleSheet("QLabel { color: #64748b; font-size: 12px; }");
   vidLayout->addWidget(vidLabel);
-  m_vidEdit = new QLineEdit(this);
+  m_vidEdit = new CustomLineEdit(this);
   m_vidEdit->setText("0x2E3C");
   m_vidEdit->setPlaceholderText(tr("Enter VID (hex)"));
   m_vidEdit->setMinimumWidth(100);
@@ -240,7 +240,7 @@ void MainWindow::setupUi()
   QLabel * pidLabel = new QLabel(tr("Product ID (PID)"), this);
   pidLabel->setStyleSheet("QLabel { color: #64748b; font-size: 12px; }");
   pidLayout->addWidget(pidLabel);
-  m_pidEdit = new QLineEdit(this);
+  m_pidEdit = new CustomLineEdit(this);
   m_pidEdit->setText("0xAF01");
   m_pidEdit->setPlaceholderText(tr("Enter PID (hex)"));
   m_pidEdit->setMinimumWidth(100);
@@ -253,7 +253,7 @@ void MainWindow::setupUi()
   QLabel * addrLabel = new QLabel(tr("Flash Address"), this);
   addrLabel->setStyleSheet("QLabel { color: #64748b; font-size: 12px; }");
   addrLayout->addWidget(addrLabel);
-  m_addressEdit = new QLineEdit(this);
+  m_addressEdit = new CustomLineEdit(this);
   m_addressEdit->setText("0x08005000");
   m_addressEdit->setPlaceholderText(tr("Enter flash address (hex)"));
   m_addressEdit->setEnabled(false);
@@ -353,7 +353,7 @@ void MainWindow::setupUi()
   logTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
   logCardLayout->addWidget(logTitle);
 
-  m_logEdit = new QTextEdit(this);
+  m_logEdit = new CustomTextEdit(this);
   m_logEdit->setReadOnly(true);
   m_logEdit->setMinimumHeight(100);
   logCardLayout->addWidget(m_logEdit, 1);
@@ -948,4 +948,88 @@ void MainWindow::onDeviceConnected()
 void MainWindow::onDeviceDisconnected()
 {
   updateStatus(tr("Disconnected"));
+}
+
+void CustomTextEdit::contextMenuEvent(QContextMenuEvent *event)
+{
+  QMenu *menu = createStandardContextMenu();
+  
+  // Get standard menu actions and set Chinese text
+  QList<QAction *> actions = menu->actions();
+  for(QAction *action : actions)
+  {
+    if(action->text() == "&Undo")
+    {
+      action->setText(tr("Undo"));
+    }
+    else if(action->text() == "&Redo")
+    {
+      action->setText(tr("Redo"));
+    }
+    else if(action->text() == "Cu&t")
+    {
+      action->setText(tr("Cut"));
+    }
+    else if(action->text() == "&Copy")
+    {
+      action->setText(tr("Copy"));
+    }
+    else if(action->text() == "&Paste")
+    {
+      action->setText(tr("Paste"));
+    }
+    else if(action->text() == "Delete")
+    {
+      action->setText(tr("Delete"));
+    }
+    else if(action->text() == "Select All")
+    {
+      action->setText(tr("Select All"));
+    }
+  }
+  
+  menu->exec(event->globalPos());
+  delete menu;
+}
+
+void CustomLineEdit::contextMenuEvent(QContextMenuEvent *event)
+{
+  QMenu *menu = createStandardContextMenu();
+  
+  // Get standard menu actions and set Chinese text
+  QList<QAction *> actions = menu->actions();
+  for(QAction *action : actions)
+  {
+    if(action->text() == "&Undo")
+    {
+      action->setText(tr("Undo"));
+    }
+    else if(action->text() == "&Redo")
+    {
+      action->setText(tr("Redo"));
+    }
+    else if(action->text() == "Cu&t")
+    {
+      action->setText(tr("Cut"));
+    }
+    else if(action->text() == "&Copy")
+    {
+      action->setText(tr("Copy"));
+    }
+    else if(action->text() == "&Paste")
+    {
+      action->setText(tr("Paste"));
+    }
+    else if(action->text() == "Delete")
+    {
+      action->setText(tr("Delete"));
+    }
+    else if(action->text() == "Select All")
+    {
+      action->setText(tr("Select All"));
+    }
+  }
+  
+  menu->exec(event->globalPos());
+  delete menu;
 }
