@@ -65,7 +65,7 @@ jobs:
         cp ./*.deb deb_package
 
     - name: 'Upload artifact: deb'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
           name: ${{ env.APP_NAME }}_linux_deb_${{ matrix.platform }}
           path: deb_package/*.deb
@@ -158,7 +158,7 @@ jobs:
         cd ../..
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ env.APP_NAME }}_${{ env.APP_VERSION }}_${{ matrix.config.platform_tag }}
         path: ${{ env.APP_NAME }}_${{ env.APP_VERSION }}_${{ matrix.config.platform_tag }}.zip
