@@ -1,7 +1,7 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef UPGRADEPAGE_H
+#define UPGRADEPAGE_H
 
-#include <QMainWindow>
+#include <QWidget>
 #include <QLabel>
 #include <QPushButton>
 #include <QTextEdit>
@@ -36,13 +36,16 @@ class CustomLineEdit : public QLineEdit
     void contextMenuEvent(QContextMenuEvent * event) override;
 };
 
-class MainWindow : public QMainWindow
+class UpgradePage : public QWidget
 {
     Q_OBJECT
 
   public:
-    explicit MainWindow(QWidget * parent = nullptr);
-    ~MainWindow();
+    explicit UpgradePage(QWidget * parent = nullptr);
+    ~UpgradePage();
+
+  signals:
+    void backToHomeClicked();
 
   private slots:
     void onSelectFileClicked();
@@ -87,4 +90,4 @@ class MainWindow : public QMainWindow
     unsigned short m_productId;
 };
 
-#endif // MAINWINDOW_H
+#endif // UPGRADEPAGE_H

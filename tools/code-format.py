@@ -3,4 +3,4 @@
 import os
 
 # print("\nFormatting demos")
-os.system('astyle --options=code-format.cfg --recursive "../*.cpp,*.h"')
+os.system('astyle --options=code-format.cfg --recursive "../*.cpp,*.c,*.h"')

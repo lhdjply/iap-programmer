@@ -5,6 +5,7 @@ Maintainer: lhdjply <lhdjply@126.com>
 Build-Depends: debhelper-compat (= 13),
                cmake,
                libhidapi-dev,
+               libusb-1.0-0-dev,
                pkgconf,
                qt6-base-dev,
                qt6-l10n-tools,

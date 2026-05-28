@@ -3,7 +3,11 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QDir>
-#include "mainwindow.h"
+#include <QMainWindow>
+#include <QStackedWidget>
+#include "homepage.h"
+#include "upgradepage.h"
+#include "artinchippage.h"
 #include <QTranslator>
 
 using namespace Qt::Literals::StringLiterals;
@@ -35,7 +39,41 @@ int main(int argc, char * argv[])
     QCoreApplication::installTranslator(&translator);
   }
 
-  MainWindow window;
+  QMainWindow window;
+  window.setStyleSheet("QMainWindow { background-color: #f5f7fa; }");
+  window.setWindowTitle(QObject::tr("IAP Programmer"));
+  window.setMinimumSize(700, 550);
+  window.resize(900, 650);
+
+  QStackedWidget * stack = new QStackedWidget(&window);
+
+  HomePage * homePage = new HomePage(&window);
+  UpgradePage * upgradePage = new UpgradePage(&window);
+  ArtInChipPage * artInChipPage = new ArtInChipPage(&window);
+
+  stack->addWidget(homePage);     // 0
+  stack->addWidget(upgradePage);  // 1
+  stack->addWidget(artInChipPage); // 2
+  stack->setCurrentIndex(0);
+
+  QObject::connect(homePage, &HomePage::enterArtInChipClicked, [stack]()
+  {
+    stack->setCurrentIndex(2);
+  });
+  QObject::connect(artInChipPage, &ArtInChipPage::backToHomeClicked, [stack]()
+  {
+    stack->setCurrentIndex(0);
+  });
+  QObject::connect(homePage, &HomePage::enterUpgradeClicked, [stack]()
+  {
+    stack->setCurrentIndex(1);
+  });
+  QObject::connect(upgradePage, &UpgradePage::backToHomeClicked, [stack]()
+  {
+    stack->setCurrentIndex(0);
+  });
+
+  window.setCentralWidget(stack);
   window.show();
 
   return app.exec();

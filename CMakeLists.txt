@@ -35,6 +35,7 @@ endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 
 find_library(HIDAPI_LIBRARY NAMES hidapi hidapi-libusb)
 find_path(HIDAPI_INCLUDE_DIR NAMES hidapi.h PATH_SUFFIXES hidapi)
@@ -58,20 +59,29 @@ file(GLOB_RECURSE PROJECT_SOURCES
     "src/*.h"
 )
 
+file(GLOB_RECURSE PROJECT_C_SOURCES
+    "src/*.c"
+)
+
 include_directories(src)
 
 # 使用变量创建目标
 qt_add_executable(${PROJECT_TARGET}
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
+    ${PROJECT_C_SOURCES}
     ${IAP_PROGRAMMER_QRC_FILES}
     ${WIN_RESOURCES}
 )
 
 # 使用变量链接库
-target_link_libraries(${PROJECT_TARGET} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${HIDAPI_LIBRARY})
-target_include_directories(${PROJECT_TARGET} PRIVATE ${HIDAPI_INCLUDE_DIR})
+target_link_libraries(${PROJECT_TARGET} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${HIDAPI_LIBRARY} ${LIBUSB_LIBRARIES})
+target_include_directories(${PROJECT_TARGET} PRIVATE ${HIDAPI_INCLUDE_DIR} ${LIBUSB_INCLUDE_DIRS})
 target_compile_options(${PROJECT_TARGET} PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_definitions(${PROJECT_TARGET} PRIVATE UPGCMD_AS_LIBRARY)
+
+# Set C11 standard for C sources
+set_source_files_properties(${PROJECT_C_SOURCES} PROPERTIES COMPILE_FLAGS "-std=c11")
 
 # 使用变量设置属性
 set_target_properties(${PROJECT_TARGET} PROPERTIES

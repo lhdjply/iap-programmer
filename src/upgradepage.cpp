@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "upgradepage.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFileDialog>
@@ -11,21 +11,21 @@
 #include <QFrame>
 #include <QGraphicsDropShadowEffect>
 
-MainWindow::MainWindow(QWidget * parent)
-  : QMainWindow(parent)
+UpgradePage::UpgradePage(QWidget * parent)
+  : QWidget(parent)
   , m_hidDevice(new HidDevice(this))
   , m_vendorId(0x2E3C)
   , m_productId(0xAF01)
 {
   setupUi();
 
-  connect(m_hidDevice, &HidDevice::dataReceived, this, &MainWindow::onDataReceived);
-  connect(m_hidDevice, &HidDevice::errorOccurred, this, &MainWindow::onErrorOccurred);
+  connect(m_hidDevice, &HidDevice::dataReceived, this, &UpgradePage::onDataReceived);
+  connect(m_hidDevice, &HidDevice::errorOccurred, this, &UpgradePage::onErrorOccurred);
 
   m_startBtn->setEnabled(false);
 }
 
-MainWindow::~MainWindow()
+UpgradePage::~UpgradePage()
 {
   if(m_hidDevice->isOpen())
   {
@@ -33,13 +33,10 @@ MainWindow::~MainWindow()
   }
 }
 
-void MainWindow::setupUi()
+void UpgradePage::setupUi()
 {
   // 设置窗口整体样式
   setStyleSheet(R"(
-    QMainWindow {
-      background-color: #f5f7fa;
-    }
     QLabel {
       color: #2c3e50;
       font-size: 13px;
@@ -119,10 +116,36 @@ void MainWindow::setupUi()
     }
   )");
 
-  QWidget * centralWidget = new QWidget(this);
-  QVBoxLayout * mainLayout = new QVBoxLayout(centralWidget);
+  QVBoxLayout * mainLayout = new QVBoxLayout(this);
   mainLayout->setSpacing(5);
   mainLayout->setContentsMargins(5, 5, 5, 5);
+
+  // 返回按钮
+  QHBoxLayout * headerLayout = new QHBoxLayout();
+  QPushButton * backBtn = new QPushButton(tr("< Back to Menu"), this);
+  backBtn->setFixedWidth(150);
+  backBtn->setFixedHeight(32);
+  backBtn->setCursor(Qt::PointingHandCursor);
+  backBtn->setStyleSheet(R"(
+    QPushButton {
+      padding: 6px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #64748b;
+      background: #e2e8f0;
+    }
+    QPushButton:hover {
+      background: #cbd5e1;
+      color: #334155;
+    }
+  )");
+  headerLayout->addWidget(backBtn);
+  headerLayout->addStretch();
+  mainLayout->addLayout(headerLayout);
+
+  connect(backBtn, &QPushButton::clicked, this, &UpgradePage::backToHomeClicked);
 
   // 状态卡片
   QFrame * statusCard = new QFrame(this);
@@ -360,17 +383,12 @@ void MainWindow::setupUi()
 
   mainLayout->addWidget(logCard);
 
-  setCentralWidget(centralWidget);
-  setWindowTitle(tr("iap-programmer"));
-  setMinimumSize(600, 500);
-  resize(800, 500);
-
   // Connect signals
-  connect(m_selectFileBtn, &QPushButton::clicked, this, &MainWindow::onSelectFileClicked);
-  connect(m_startBtn, &QPushButton::clicked, this, &MainWindow::onStartUpgradeClicked);
+  connect(m_selectFileBtn, &QPushButton::clicked, this, &UpgradePage::onSelectFileClicked);
+  connect(m_startBtn, &QPushButton::clicked, this, &UpgradePage::onStartUpgradeClicked);
 }
 
-void MainWindow::log(const QString & message)
+void UpgradePage::log(const QString & message)
 {
   QString timestamp = QDateTime::currentDateTime().toString("[hh:mm:ss]");
   QString color;
@@ -398,7 +416,7 @@ void MainWindow::log(const QString & message)
                     .arg(message.toHtmlEscaped()));
 }
 
-void MainWindow::updateStatus(const QString & status)
+void UpgradePage::updateStatus(const QString & status)
 {
   m_statusLabel->setText(status);
 
@@ -414,7 +432,7 @@ void MainWindow::updateStatus(const QString & status)
   }
 }
 
-void MainWindow::onSelectFileClicked()
+void UpgradePage::onSelectFileClicked()
 {
   QString filePath = QFileDialog::getOpenFileName(this, tr("Select Firmware File"),
                                                   m_lastDirPath, tr("Firmware Files (*.bin *.hex);;Binary Files (*.bin);;Hex Files (*.hex);;All Files (*)"));
@@ -438,7 +456,7 @@ void MainWindow::onSelectFileClicked()
   }
 }
 
-uint32_t MainWindow::loadFirmwareFile(const QString & filePath)
+uint32_t UpgradePage::loadFirmwareFile(const QString & filePath)
 {
   QFile file(filePath);
   if(!file.open(QIODevice::ReadOnly))
@@ -543,7 +561,7 @@ endOfFile:
   return m_firmwareData.size();
 }
 
-void MainWindow::onStartUpgradeClicked()
+void UpgradePage::onStartUpgradeClicked()
 {
   // Read VID and PID from UI
   bool ok;
@@ -658,7 +676,7 @@ void MainWindow::onStartUpgradeClicked()
   }
 }
 
-bool MainWindow::sendCommand(const QByteArray & cmd)
+bool UpgradePage::sendCommand(const QByteArray & cmd)
 {
   if(!m_hidDevice->isOpen())
   {
@@ -686,7 +704,7 @@ bool MainWindow::sendCommand(const QByteArray & cmd)
   return result > 0;
 }
 
-QByteArray MainWindow::sendAndReceive(const QByteArray & cmd, int timeoutMs)
+QByteArray UpgradePage::sendAndReceive(const QByteArray & cmd, int timeoutMs)
 {
   if(!sendCommand(cmd))
   {
@@ -696,7 +714,7 @@ QByteArray MainWindow::sendAndReceive(const QByteArray & cmd, int timeoutMs)
   return m_hidDevice->read(timeoutMs);
 }
 
-bool MainWindow::startIap()
+bool UpgradePage::startIap()
 {
   log(tr("Starting IAP upgrade process..."));
 
@@ -916,7 +934,7 @@ bool MainWindow::startIap()
   return true;
 }
 
-bool MainWindow::sendAddress(uint32_t address)
+bool UpgradePage::sendAddress(uint32_t address)
 {
   QByteArray response = sendAndReceive(IapProtocol::buildAddressCommand(address));
 
@@ -930,22 +948,24 @@ bool MainWindow::sendAddress(uint32_t address)
 
   return true;
 }
-void MainWindow::onDataReceived(const QByteArray & data)
+
+void UpgradePage::onDataReceived(const QByteArray & data)
 {
   // Data received asynchronously - for future use
+  Q_UNUSED(data);
 }
 
-void MainWindow::onErrorOccurred(const QString & error)
+void UpgradePage::onErrorOccurred(const QString & error)
 {
   log(tr("Error: %1").arg(error));
 }
 
-void MainWindow::onDeviceConnected()
+void UpgradePage::onDeviceConnected()
 {
   updateStatus(tr("Connected"));
 }
 
-void MainWindow::onDeviceDisconnected()
+void UpgradePage::onDeviceDisconnected()
 {
   updateStatus(tr("Disconnected"));
 }
