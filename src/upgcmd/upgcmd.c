@@ -1346,7 +1346,8 @@ int image_partition_read(const char * filename, partition_t * partitions, int * 
 }
 
 int __do_fwc_upgrade(upg_device_t * dev, FILE * fp,
-                     const fwc_meta_t * meta, uint32_t * total_sent)
+                     const fwc_meta_t * meta, uint32_t * total_sent,
+                     uint32_t total_size)
 {
   int ret;
   uint32_t block_size;
@@ -1431,6 +1432,8 @@ int __do_fwc_upgrade(upg_device_t * dev, FILE * fp,
 
     *total_sent += buf_size;
 
+    show_progress_print(*total_sent, total_size);
+
     if(buf_size >= 0x100000)
       aicupg_output("Send the %u block, size %uMB\n", i, buf_size >> 20);
     else
@@ -1466,6 +1469,7 @@ int __do_fwc_upgrade(upg_device_t * dev, FILE * fp,
     }
 
     *total_sent += remainder;
+    show_progress_print(*total_sent, total_size);
     aicupg_output("Send the rest %u\n", remainder);
   }
 
@@ -1547,6 +1551,14 @@ int image_do_upgrade_inner(upg_device_t * dev, const char * image_file)
 
   aicupg_output("\nThe Image file: %s, size %ld\n", image_file, file_size);
 
+  /* Calculate total payload size for progress tracking */
+  uint32_t total_size = 0;
+  for(int i = 0; i < comp_count; i++)
+  {
+    total_size += meta[i].size;
+  }
+  show_progress_init();
+
   fp = fopen(image_file, "rb");
   if(!fp)
   {
@@ -1561,7 +1573,7 @@ int image_do_upgrade_inner(upg_device_t * dev, const char * image_file)
 
   for(int i = 0; i < comp_count; i++)
   {
-    int ret = __do_fwc_upgrade(dev, fp, &meta[i], &total_sent);
+    int ret = __do_fwc_upgrade(dev, fp, &meta[i], &total_sent, total_size);
     if(ret == -2)
     {
       /* Device rebooted after flashing updater - wait for reconnect */
@@ -1618,6 +1630,7 @@ int image_do_upgrade_inner(upg_device_t * dev, const char * image_file)
       for(int j = 0; j < new_dev->port_count; j++)
         aicupg_output("%s%u", j == 0 ? "" : "-", new_dev->port_numbers[j]);
       aicupg_output(" connected\n");
+      show_progress_print(total_sent, total_size);
       continue;
     }
     if(ret < 0)
@@ -1626,6 +1639,7 @@ int image_do_upgrade_inner(upg_device_t * dev, const char * image_file)
       free(meta);
       return -1;
     }
+    show_progress_print(total_sent, total_size);
   }
 
   aicupg_cmd_set_upg_end(dev);
@@ -1636,6 +1650,7 @@ int image_do_upgrade_inner(upg_device_t * dev, const char * image_file)
                    (double)(tv_end.tv_usec - tv_start.tv_usec) / 1000000.0;
   double speed = elapsed > 0 ? (double)total_sent / elapsed / 1048576.0 : 0;
 
+  show_progress_print(total_size, total_size);
   aicupg_output("\nBurn %s successfully!\n", image_file);
   aicupg_output("Used time: %.1f sec, Speed: %.2f MB/s\n", elapsed, speed);
 
