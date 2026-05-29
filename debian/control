@@ -26,6 +26,6 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends}
 Description: IAP programmer for microcontrollers
- A Qt6-based In-Application Programming tool for microcontrollers
- with both GUI and command-line interfaces, supporting firmware
- programming via HID interface for embedded device development.
+ A Qt6-based In-Application Programming tool supporting ArtInChip chip
+ firmware download via USB and general MCU firmware programming via
+ HID interface for embedded device development.
