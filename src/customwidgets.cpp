@@ -9,20 +9,41 @@ void CustomTextEdit::contextMenuEvent(QContextMenuEvent * event)
   QList<QAction *> actions = menu->actions();
   for(QAction * action : actions)
   {
-    if(action->text() == "&Undo")
-      action->setText(QObject::tr("Undo"));
-    else if(action->text() == "&Redo")
-      action->setText(QObject::tr("Redo"));
-    else if(action->text() == "Cu&t")
-      action->setText(QObject::tr("Cut"));
-    else if(action->text() == "&Copy")
-      action->setText(QObject::tr("Copy"));
-    else if(action->text() == "&Paste")
-      action->setText(QObject::tr("Paste"));
-    else if(action->text() == "Delete")
-      action->setText(QObject::tr("Delete"));
-    else if(action->text() == "Select All")
-      action->setText(QObject::tr("Select All"));
+    QString text = action->text();
+    int tabPos = text.indexOf('\t');
+    if(tabPos != -1)
+    {
+      text = text.left(tabPos);
+    }
+
+    if(text == "&Undo")
+    {
+      action->setText(tr("Undo") + "\t Ctrl+Z");
+    }
+    else if(text == "&Redo")
+    {
+      action->setText(tr("Redo") + "\t Ctrl+Y");
+    }
+    else if(text == "Cu&t")
+    {
+      action->setText(tr("Cut") + "\t Ctrl+X");
+    }
+    else if(text == "&Copy")
+    {
+      action->setText(tr("Copy") + "\t Ctrl+C");
+    }
+    else if(text == "&Paste")
+    {
+      action->setText(tr("Paste") + "\t Ctrl+V");
+    }
+    else if(text == "Delete")
+    {
+      action->setText(tr("Delete"));
+    }
+    else if(text == "Select All")
+    {
+      action->setText(tr("Select All") + "\t Ctrl+A");
+    }
   }
 
   menu->exec(event->globalPos());
@@ -36,20 +57,41 @@ void CustomLineEdit::contextMenuEvent(QContextMenuEvent * event)
   QList<QAction *> actions = menu->actions();
   for(QAction * action : actions)
   {
-    if(action->text() == "&Undo")
-      action->setText(QObject::tr("Undo"));
-    else if(action->text() == "&Redo")
-      action->setText(QObject::tr("Redo"));
-    else if(action->text() == "Cu&t")
-      action->setText(QObject::tr("Cut"));
-    else if(action->text() == "&Copy")
-      action->setText(QObject::tr("Copy"));
-    else if(action->text() == "&Paste")
-      action->setText(QObject::tr("Paste"));
-    else if(action->text() == "Delete")
-      action->setText(QObject::tr("Delete"));
-    else if(action->text() == "Select All")
-      action->setText(QObject::tr("Select All"));
+    QString text = action->text();
+    int tabPos = text.indexOf('\t');
+    if(tabPos != -1)
+    {
+      text = text.left(tabPos);
+    }
+
+    if(text == "&Undo")
+    {
+      action->setText(tr("Undo") + "\t Ctrl+Z");
+    }
+    else if(text == "&Redo")
+    {
+      action->setText(tr("Redo") + "\t Ctrl+Y");
+    }
+    else if(text == "Cu&t")
+    {
+      action->setText(tr("Cut") + "\t Ctrl+X");
+    }
+    else if(text == "&Copy")
+    {
+      action->setText(tr("Copy") + "\t Ctrl+C");
+    }
+    else if(text == "&Paste")
+    {
+      action->setText(tr("Paste") + "\t Ctrl+V");
+    }
+    else if(text == "Delete")
+    {
+      action->setText(tr("Delete"));
+    }
+    else if(text == "Select All")
+    {
+      action->setText(tr("Select All") + "\t Ctrl+A");
+    }
   }
 
   menu->exec(event->globalPos());
