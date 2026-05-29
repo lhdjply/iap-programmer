@@ -1,3 +1,12 @@
+iap-programmer (1.0.1) unstable; urgency=medium
+
+  * New release.
+  * 右键菜单汉化.
+  * 移除命令行控制，只保留gui.
+  * 增加匠芯创下载支持.
+
+ -- lhdjply <lhdjply@126.com>  Thu, 26 Mar 2026 15:49:19 +0800
+
 iap-programmer (1.0.0) unstable; urgency=medium
 
   * New release.
