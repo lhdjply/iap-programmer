@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QProgressBar>
 #include <QThread>
+#include "customwidgets.h"
 
 class ArtInChipPage : public QWidget
 {

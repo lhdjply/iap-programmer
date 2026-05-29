@@ -110,86 +110,6 @@
     </message>
 </context>
 <context>
-    <name>CustomLineEdit</name>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1025"/>
-        <source>Undo</source>
-        <translation>撤销</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1029"/>
-        <source>Redo</source>
-        <translation>重做</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1033"/>
-        <source>Cut</source>
-        <translation>剪切</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1037"/>
-        <source>Copy</source>
-        <translation>复制</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1041"/>
-        <source>Paste</source>
-        <translation>粘贴</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1045"/>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1049"/>
-        <source>Select All</source>
-        <translation>全选</translation>
-    </message>
-</context>
-<context>
-    <name>CustomTextEdit</name>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="983"/>
-        <source>Undo</source>
-        <translation>撤销</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="987"/>
-        <source>Redo</source>
-        <translation>重做</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="991"/>
-        <source>Cut</source>
-        <translation>剪切</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="995"/>
-        <source>Copy</source>
-        <translation>复制</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="999"/>
-        <source>Paste</source>
-        <translation>粘贴</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1003"/>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <location filename="../../src/upgradepage.cpp" line="1007"/>
-        <source>Select All</source>
-        <translation>全选</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="vanished">清空</translation>
-    </message>
-</context>
-<context>
     <name>HidDevice</name>
     <message>
         <location filename="../../src/hiddevice.cpp" line="31"/>
@@ -237,6 +157,48 @@
         <location filename="../../src/main.cpp" line="44"/>
         <source>IAP Programmer</source>
         <translation>IAP烧录工具</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="13"/>
+        <location filename="../../src/customwidgets.cpp" line="40"/>
+        <source>Undo</source>
+        <translation>撤销</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="15"/>
+        <location filename="../../src/customwidgets.cpp" line="42"/>
+        <source>Redo</source>
+        <translation>重做</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="17"/>
+        <location filename="../../src/customwidgets.cpp" line="44"/>
+        <source>Cut</source>
+        <translation>剪切</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="19"/>
+        <location filename="../../src/customwidgets.cpp" line="46"/>
+        <source>Copy</source>
+        <translation>复制</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="21"/>
+        <location filename="../../src/customwidgets.cpp" line="48"/>
+        <source>Paste</source>
+        <translation>粘贴</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="23"/>
+        <location filename="../../src/customwidgets.cpp" line="50"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../../src/customwidgets.cpp" line="25"/>
+        <location filename="../../src/customwidgets.cpp" line="52"/>
+        <source>Select All</source>
+        <translation>全选</translation>
     </message>
 </context>
 <context>

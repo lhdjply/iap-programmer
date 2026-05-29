@@ -184,7 +184,7 @@ void ArtInChipPage::setupUi()
 
   QHBoxLayout * fileLayout = new QHBoxLayout();
   fileLayout->setSpacing(12);
-  m_filePathEdit = new QLineEdit(this);
+  m_filePathEdit = new CustomLineEdit(this);
   m_filePathEdit->setReadOnly(true);
   m_filePathEdit->setPlaceholderText(tr("Select firmware image file (.img)"));
   fileLayout->addWidget(m_filePathEdit);
@@ -280,7 +280,7 @@ void ArtInChipPage::setupUi()
   logTitle->setStyleSheet("QLabel { font-size: 14px; font-weight: bold; color: #64748b; }");
   logCardLayout->addWidget(logTitle);
 
-  m_logEdit = new QTextEdit(this);
+  m_logEdit = new CustomTextEdit(this);
   m_logEdit->setReadOnly(true);
   m_logEdit->setMinimumHeight(100);
   logCardLayout->addWidget(m_logEdit, 1);

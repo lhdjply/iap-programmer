@@ -10,31 +10,9 @@
 #include <QFile>
 #include <QMenu>
 #include <QPoint>
-#include <QContextMenuEvent>
 #include "hiddevice.h"
 #include "iaprotocol.h"
-
-// Custom text edit with translated context menu
-class CustomTextEdit : public QTextEdit
-{
-    Q_OBJECT
-  public:
-    explicit CustomTextEdit(QWidget * parent = nullptr) : QTextEdit(parent) {}
-
-  protected:
-    void contextMenuEvent(QContextMenuEvent * event) override;
-};
-
-// Custom line edit with translated context menu
-class CustomLineEdit : public QLineEdit
-{
-    Q_OBJECT
-  public:
-    explicit CustomLineEdit(QWidget * parent = nullptr) : QLineEdit(parent) {}
-
-  protected:
-    void contextMenuEvent(QContextMenuEvent * event) override;
-};
+#include "customwidgets.h"
 
 class UpgradePage : public QWidget
 {
