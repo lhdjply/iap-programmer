@@ -212,17 +212,17 @@
 <context>
     <name>HomePage</name>
     <message>
-        <location filename="../../src/homepage.cpp" line="32"/>
-        <source>In-Application Programming Tool</source>
-        <translation>应用编程工具</translation>
+        <location filename="../../src/homepage.cpp" line="21"/>
+        <source>IAP Programmer</source>
+        <translation>IAP烧录工具</translation>
     </message>
     <message>
-        <location filename="../../src/homepage.cpp" line="86"/>
+        <location filename="../../src/homepage.cpp" line="76"/>
         <source>ArtInChip Download</source>
         <translation>匠芯创芯片下载</translation>
     </message>
     <message>
-        <location filename="../../src/homepage.cpp" line="107"/>
+        <location filename="../../src/homepage.cpp" line="97"/>
         <source>IAP Upgrade Tool</source>
         <translation>IAP升级工具</translation>
     </message>

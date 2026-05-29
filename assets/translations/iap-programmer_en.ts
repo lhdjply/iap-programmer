@@ -212,17 +212,17 @@
 <context>
     <name>HomePage</name>
     <message>
-        <location filename="../../src/homepage.cpp" line="32"/>
-        <source>In-Application Programming Tool</source>
+        <location filename="../../src/homepage.cpp" line="21"/>
+        <source>IAP Programmer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/homepage.cpp" line="86"/>
+        <location filename="../../src/homepage.cpp" line="76"/>
         <source>ArtInChip Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/homepage.cpp" line="107"/>
+        <location filename="../../src/homepage.cpp" line="97"/>
         <source>IAP Upgrade Tool</source>
         <translation type="unfinished"></translation>
     </message>

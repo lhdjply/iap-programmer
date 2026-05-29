@@ -18,7 +18,7 @@ void HomePage::setupUi()
   layout->setAlignment(Qt::AlignCenter);
   layout->setSpacing(30);
 
-  QLabel * titleLabel = new QLabel("IAP Programmer", this);
+  QLabel * titleLabel = new QLabel(tr("IAP Programmer"), this);
   titleLabel->setAlignment(Qt::AlignCenter);
   titleLabel->setStyleSheet(R"(
     QLabel {
@@ -28,16 +28,6 @@ void HomePage::setupUi()
     }
   )");
   layout->addWidget(titleLabel);
-
-  QLabel * subtitleLabel = new QLabel(tr("In-Application Programming Tool"), this);
-  subtitleLabel->setAlignment(Qt::AlignCenter);
-  subtitleLabel->setStyleSheet(R"(
-    QLabel {
-      font-size: 16px;
-      color: #64748b;
-    }
-  )");
-  layout->addWidget(subtitleLabel);
 
   layout->addSpacing(20);
 
