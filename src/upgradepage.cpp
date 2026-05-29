@@ -48,7 +48,7 @@ void UpgradePage::setupUi()
       background-color: white;
       color: #2c3e50;
       font-size: 13px;
-      min-height: 16px;
+      min-height: 22px;
       selection-background-color: #3498db;
     }
     QLineEdit:focus {
@@ -208,6 +208,7 @@ void UpgradePage::setupUi()
   fileLayout->setSpacing(12);
   m_filePathEdit = new CustomLineEdit(this);
   m_filePathEdit->setReadOnly(true);
+  m_filePathEdit->setFixedHeight(36);
   m_filePathEdit->setPlaceholderText(tr("Select firmware file (.bin or .hex)"));
   fileLayout->addWidget(m_filePathEdit);
 
@@ -447,7 +448,7 @@ void UpgradePage::onSelectFileClicked()
     {
       m_firmwarePath = filePath;
       m_filePathEdit->setText(filePath);
-      m_filePathEdit->setStyleSheet("QLineEdit { padding: 10px 14px; border: 2px solid #11998e; border-radius: 10px; background-color: white; color: #2c3e50; font-size: 13px; }");
+      m_filePathEdit->setStyleSheet("QLineEdit { padding: 4px 10px; border: 2px solid #11998e; border-radius: 8px; background-color: white; color: #2c3e50; font-size: 13px; }");
       m_addressEdit->setEnabled(true);
       log(tr("Loaded firmware: %1 (%2 bytes)").arg(filePath).arg(size));
 
